@@ -1,0 +1,30 @@
+name: Matrix Build Demo
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        version: [ "3.9", "3.10", "3.11" ]
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: matrix-cadea14
+        run: echo "Building for Python version ${{ matrix.version }}"
+
+      - name: Generate build artifact
+        run: echo "Build output for Python ${{ matrix.version }}" > output-${{ matrix.version }}.txt
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-cadea14-py${{ matrix.version }}
+          path: output-${{ matrix.version }}.txt
